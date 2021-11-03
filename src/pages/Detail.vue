@@ -10,12 +10,16 @@ const props = defineProps({
 
 const url = `/pg-${props.id}.json?v=${version.value}`
 const { data, isFetching } = useRequest(url).json()
+
+function openItem(item) {
+  window.open(item.videosrc)
+}
 </script>
 
 <template>
   <p v-if="isFetching">加载中...</p>
   <h3 v-for="item in data?.list" :key="item.globalid">
-    <a class="item" @click="setPlayInfo(item)">
+    <a class="item" @click="openItem(item)">
       {{ item.title }}
     </a>
   </h3>
