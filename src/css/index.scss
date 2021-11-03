@@ -1,0 +1,10 @@
+*,
+:after,
+:before {
+  box-sizing: border-box;
+}
+
+::selection {
+  color: #000;
+  background-color: #79ffe1;
+}
