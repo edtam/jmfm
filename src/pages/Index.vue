@@ -1,5 +1,6 @@
 <script setup>
-import { ref, provide, watch } from 'vue'
+import { ref, provide } from 'vue'
+import dayjs from 'dayjs'
 import Player from '../components/player/Player.vue'
 import useRequest from '../composables/useRequest'
 
@@ -8,49 +9,45 @@ const setPlayInfo = (obj) => (playInfo.value = obj)
 provide('playInfo', playInfo)
 provide('setPlayInfo', setPlayInfo)
 
-const version = ref(Date.now())
-provide('version', version)
+const appDataVersion = ref(Date.now())
+provide('version', appDataVersion)
 
-const date = new Date()
-const dateArr = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
-const listVersion = dateArr.map((v) => String(v).padStart(2, 0)).join('')
-const url = `/list.json?v=${listVersion}`
-const { data } = useRequest(url).json()
-watch(
-  () => data.value?.time,
-  (val) => (version.value = val)
-)
+const listVersion = dayjs().format('YYYYMMDD')
+const listUrl = `/list.json?v=${listVersion}`
+const { data, onFetchResponse } = useRequest(listUrl).json()
+onFetchResponse(() => {
+  appDataVersion.value = data.value.time
+})
 </script>
 
 <template>
-  <aside class="sidebar">
-    <h1>JMFM<br />节目点播</h1>
-    <h2 v-for="item in data?.list" :key="item.id">
-      <router-link :to="`/detail/${item.id}`" replace>
-        {{ item.title }}
-      </router-link>
-    </h2>
-  </aside>
-  <main class="view">
-    <router-view :key="$route.path"></router-view>
-  </main>
+  <el-container class="page">
+    <el-aside width="200px">
+      <h1 class="title">JMFM<br />节目点播</h1>
+      <el-menu router>
+        <el-menu-item
+          v-for="item in data?.list"
+          :key="item.id"
+          :index="`/detail/${item.id}`"
+        >
+          <h2>{{ item.title }}</h2>
+        </el-menu-item>
+      </el-menu>
+    </el-aside>
+    <el-container>
+      <el-main>
+        <router-view :key="$route.path"></router-view>
+      </el-main>
+    </el-container>
+  </el-container>
   <Player />
 </template>
 
-<style lang="scss">
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 100;
-  overflow-y: auto;
-  width: 240px;
-  border-right: 1px solid #ddd;
-  padding: 0 20px;
+<style lang="scss" scoped>
+.page {
+  height: 100vh;
 }
-.view {
-  margin-left: 240px;
-  padding: 20px 20px 100px;
+.title {
+  text-align: center;
 }
 </style>

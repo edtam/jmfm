@@ -9,6 +9,8 @@
   "dependencies": {
     "@vueuse/core": "^6.4.1",
     "bootstrap-icons": "^1.6.1",
+    "dayjs": "^1.11.0",
+    "element-plus": "^2.1.4",
     "normalize.css": "^8.0.1",
     "vue": "^3.2.13",
     "vue-router": "^4.0.12"
@@ -16,6 +18,8 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.9.0",
     "sass": "^1.42.1",
+    "unplugin-auto-import": "^0.6.6",
+    "unplugin-vue-components": "^0.18.1",
     "vite": "^2.5.10"
   }
 }
