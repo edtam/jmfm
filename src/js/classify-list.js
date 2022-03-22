@@ -11,7 +11,7 @@ export function isDateSortList(list = []) {
 export function classifyYear(list = []) {
   const years = new Set()
   list.forEach((item) => {
-    years.add(item.title.slice(0, 4))
+    years.add(item.title.trim().slice(0, 4))
   })
   return [...years]
 }
@@ -19,7 +19,7 @@ export function classifyYear(list = []) {
 // 根据年份过滤
 export function filterListYear(list = [], year = 0) {
   return list.filter((item) => {
-    return item.title.slice(0, 4) === year
+    return item.title.trim().slice(0, 4) === year
   })
 }
 
@@ -27,7 +27,7 @@ export function filterListYear(list = [], year = 0) {
 export function classifyMonth(list = []) {
   const months = new Set()
   list.forEach((item) => {
-    months.add(item.title.slice(4, 6))
+    months.add(item.title.trim().slice(4, 6))
   })
   return [...months]
 }
@@ -35,6 +35,6 @@ export function classifyMonth(list = []) {
 // 根据月份过滤
 export function filterListYearMonth(list = [], ym = 0) {
   return list.filter((item) => {
-    return item.title.slice(0, 6) === ym
+    return item.title.trim().slice(0, 6) === ym
   })
 }
